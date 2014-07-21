@@ -24,15 +24,15 @@ public class MyGame extends Game {
 		camera.update();
 		batch = new SpriteBatch();
 		batch.setProjectionMatrix(camera.combined);
-		
+
 		Vector2 from = new Vector2(0, 5);
 		Vector2 to = new Vector2(10, 5);
 		lightning = new Lightning.Builder(from, to)
-							.setTurn(80)
-							.setAmplitude(.05f, .1f)
-							.setSize(0.1f)
-							.setColor(Color.WHITE)
-							.build();
+			.setTurn(80)
+			.setAmplitude(.05f, .1f)
+			.setSize(0.1f)
+			.setColor(Color.WHITE)
+			.build();
 	}
 	
 	@Override
