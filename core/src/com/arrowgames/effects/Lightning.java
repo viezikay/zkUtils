@@ -1,5 +1,6 @@
 package com.arrowgames.effects;
 
+import com.arrowgames.ZkUtils;
 import com.arrowgames.pools.Pools;
 import com.arrowgames.pools.Pools.VectorPool;
 import com.arrowgames.utils.MathExtends;
@@ -68,6 +69,7 @@ public class Lightning implements Effect, Disposable {
 		float s, d, a, h, duration;
 		float ampMax, ampMin, fadeTime;
 		TextureRegion texture;
+		TextureRegion dot;
 
 		public Builder(Vector2 from, Vector2 to) {
 
@@ -83,6 +85,8 @@ public class Lightning implements Effect, Disposable {
 			fadeTime = 10;
 			color = Color.WHITE;
 			turn = MathUtils.random(160, 200);
+			texture = ZkUtils.instance.lightningSample;
+			dot = ZkUtils.instance.lightningDot;
 		}
 
 		public Builder setTurn(int turn) {
@@ -130,6 +134,11 @@ public class Lightning implements Effect, Disposable {
 			texture = sample;
 			return this;
 		}
+		
+		public Builder setDotTexture(TextureRegion texture) {
+			dot = texture;
+			return this;
+		}
 
 		public Lightning build() {
 
@@ -147,6 +156,7 @@ public class Lightning implements Effect, Disposable {
 		float w, h, s, a, turn, ampMax, ampMin;
 
 		TextureRegion sample;
+		TextureRegion dot;
 
 		public void ini(Builder builder) {
 
@@ -167,6 +177,7 @@ public class Lightning implements Effect, Disposable {
 			transform();
 			
 			sample = builder.texture;
+			dot = builder.dot;
 			f = VECTOR_POOL.obtainVector2();
 			t = VECTOR_POOL.obtainVector2();
 		}
@@ -184,6 +195,7 @@ public class Lightning implements Effect, Disposable {
 
 				batch.draw(sample, f.x, f.y, 0, h/2, 
 						w, h, 1, 1, t.sub(f).angle());
+				batch.draw(dot, chain.get(i).x-h/2, chain.get(i).y, h, h);
 			}
 			batch.end();
 			batch.setColor(1, 1, 1, 1);

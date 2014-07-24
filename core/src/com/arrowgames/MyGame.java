@@ -41,7 +41,7 @@ public class MyGame extends Game {
 	@Override
 	public void render() {
 
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClearColor(0.1f, 0.1f, 0.4f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		float deltaTime = Gdx.graphics.getDeltaTime();
 		
@@ -59,14 +59,15 @@ public class MyGame extends Game {
 			to.set(x, h-y);
 			
 			l1 = new Lightning.Builder(from, to)
-				.setTurn(80)
+				.setTurn(65)
 				.setBundleSize(3)
 				.setAmplitude(2f, 4f)
-				.setSize(3)
+				.setSize(10)
 				.setDuration(.2f)
 				.setFadeTime(.15f)
 				.setColor(1, 1, 1, 1)
 				.setTextureRegion(ZkUtils.instance.lightningSample)
+				.setDotTexture(ZkUtils.instance.lightningDot)
 				.build();
 			
 			return false;

@@ -10,6 +10,7 @@ public class ZkUtils {
 	private boolean init = false;
 	
 	public TextureRegion lightningSample;
+	public TextureRegion lightningDot;
 	
 	private ZkUtils() {
 		init();
@@ -19,6 +20,7 @@ public class ZkUtils {
 		if (!init) {
 			init = true;
 			lightningSample = new TextureRegion(new Texture("sample.png"));
+			lightningDot = new TextureRegion(new Texture("dot.png"));
 		}
 		return isInit();
 	}
