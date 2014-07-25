@@ -1,4 +1,4 @@
-package com.arrowgames.effects;
+package com.arrowgames.effects.impls;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 

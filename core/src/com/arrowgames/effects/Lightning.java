@@ -1,6 +1,7 @@
 package com.arrowgames.effects;
 
 import com.arrowgames.ZkUtils;
+import com.arrowgames.effects.impls.Effect;
 import com.arrowgames.pools.Pools;
 import com.arrowgames.pools.Pools.VectorPool;
 import com.arrowgames.utils.MathExtends;
