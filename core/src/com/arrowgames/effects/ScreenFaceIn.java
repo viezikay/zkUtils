@@ -7,8 +7,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.utils.Disposable;
 
-public class ScreenFaceIn implements ScreenTransition {
+public class ScreenFaceIn implements ScreenTransition, Disposable {
 	
 	public static final String tag = ScreenFaceIn.class.getSimpleName();
 	
@@ -68,5 +69,13 @@ public class ScreenFaceIn implements ScreenTransition {
 	@Override
 	public boolean isCompleted() {
 		return t==d;
+	}
+
+	@Override
+	public void dispose() {
+		current = null;
+		next = null;
+		currFBO.dispose();
+		nextFBO.dispose();
 	}
 }
