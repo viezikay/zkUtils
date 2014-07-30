@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Pool;
 
 public class Pools {
 	
-	public static final String TAG = Pools.class.getName();
+	public static final String tag = Pools.class.getName();
 
 	public static final Pools instance = new Pools();
 	
@@ -56,6 +56,11 @@ public class Pools {
 		
 		public int getWastedObject() {
 			return vectorCounter-vector2.getFree();
+		}
+		
+		public String toString() {
+			return "[Total created object: " + vectorCounter + 
+					"][Total available object: " + vector2.getFree() + "]";
 		}
 	}
 	

@@ -2,14 +2,14 @@ package com.arrowgames.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.arrowgames.MyGame;
+import com.arrowgames.test.Tester;
 
-public class DesktopLauncher {
+public class UtilsTester {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 480;
 		config.height = 320;
-		config.vSyncEnabled = false;
-		new LwjglApplication(new MyGame(), config);
+		config.vSyncEnabled = true;
+		new LwjglApplication(new Tester(), config);
 	}
 }
