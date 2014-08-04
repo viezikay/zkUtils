@@ -19,6 +19,7 @@ public abstract class ArrowGame implements ApplicationListener {
 	public void setScreen(ArrowScreen screen, ScreenTransition transition) {
 		next = screen;
 		next.show();
+		next.pause();
 		// Make sure current transition has done or null
 		if (this.transition == null) {
 			if (transition != null) {
@@ -74,6 +75,7 @@ public abstract class ArrowGame implements ApplicationListener {
 	private void swapScreen() {
 		curr = next;
 		next = null;
+		curr.resume();
 		Gdx.input.setInputProcessor(curr.getInput());
 	}
 }
