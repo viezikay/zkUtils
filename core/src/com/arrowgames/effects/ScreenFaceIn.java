@@ -15,16 +15,18 @@ public class ScreenFaceIn implements ScreenTransition, Disposable {
 	
 	public static final ScreenFaceIn instance = new ScreenFaceIn();
 	
+	SpriteBatch batch;
 	FrameBuffer currFBO;
 	FrameBuffer nextFBO;
 	
-	float d, t, a;
+	float d, a;
 	Screen current;
 	Screen next;
 	
 	int w, h;
 	
 	public ScreenFaceIn ini(Screen from, Screen to, float in) {
+		
 		current = from;
 		next = to;
 		d = in;
@@ -35,47 +37,62 @@ public class ScreenFaceIn implements ScreenTransition, Disposable {
 		currFBO = new FrameBuffer(Format.RGBA8888, w, h, false);
 		nextFBO = new FrameBuffer(Format.RGBA8888, w, h, false);
 		
-		current.resize(w, h);
-		next.resize(w, h);
+		batch = new SpriteBatch();
 		
+		if (current != null)
+			current.resize(w, h);
+		next.resize(w, h);
+
 		return this;
 	}
 	
 	@Override
-	public void render(SpriteBatch batch, float deltaTime) {
-		
-		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		t = Math.min(t + deltaTime, d);
-		currFBO.begin();		
-		current.render(deltaTime);
-		currFBO.end();
+	public void render(float deltaTime) {
+
+		if (current != null) {
+			currFBO.begin();		
+			current.render(deltaTime);
+			currFBO.end();
+		}
 		
 		nextFBO.begin();
 		next.render(deltaTime);
 		nextFBO.end();
 		
-		a = Math.min(1, a+deltaTime*2);
+		a = Math.min(1, a+deltaTime*1/d);
+		
+		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		batch.begin();
+		
 		batch.setColor(1, 1, 1, 1);
-		batch.draw(currFBO.getColorBufferTexture(), 0, 0);
+		batch.draw(currFBO.getColorBufferTexture(), 
+				0, 0, w, h, 0, 0, w, h, false, true);
+		
 		batch.setColor(1, 1, 1, a);
-		batch.draw(nextFBO.getColorBufferTexture(), 0, 0);
+		batch.draw(nextFBO.getColorBufferTexture(), 
+				0, 0, w, h, 0, 0, w, h, false, true);
+		
 		batch.end();
 	}
 
 	@Override
 	public boolean isCompleted() {
-		return t==d;
+		return a==1;
 	}
 
 	@Override
 	public void dispose() {
-		current = null;
+		
+		if (current != null) {
+			current.hide();
+			current = null;
+		}
 		next = null;
 		currFBO.dispose();
 		nextFBO.dispose();
+		batch.dispose();
+		batch = null;
 	}
 }
