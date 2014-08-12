@@ -1,6 +1,7 @@
 package com.arrowgames.objects;
 
 import com.arrowgames.objects.TrailSegment.Vertex;
+import com.arrowgames.pools.Pools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -12,7 +13,8 @@ import com.badlogic.gdx.utils.Array;
 public class TrailGenerator {
 	
 	public static final String tag = TrailGenerator.class.getSimpleName();
-
+	
+	public boolean genable;
 	float genTime, t;
 	Texture texture;
 	Array<TrailSegment> segments;
@@ -21,24 +23,29 @@ public class TrailGenerator {
 	
 	public TrailGenerator(Body target) {
 		segments = new Array<TrailSegment>();
-		texture = new Texture("segment.png");
+		texture = new Texture("sample.png");
 		this.target = target;
 		v1 = new Vector2();
 		v2 = new Vector2();
 		v3 = new Vector2();
 		v4 = new Vector2();
+		genable = false;
 	}
 	
 	public void update(float deltaTime) {
 		t = Math.min(genTime, t + deltaTime);
-		if (t == genTime) {
+		if (t == genTime && genable) {
 			genSegment();
 			t = 0;
 		}
 		for (TrailSegment segment : segments)
 			segment.update(deltaTime);
-		if (segments.size > 0)
-		Gdx.app.log(tag, "" + segments.get(0).alpha);
+		
+		for (TrailSegment segment : segments)
+			if (segment.alpha == 0) {
+				Pools.instance.trail.free(segment);
+				segments.removeValue(segment, true);
+			}
 	}
 	
 	public void render(Batch batch) {
@@ -49,12 +56,13 @@ public class TrailGenerator {
 	public void genSegment() {
 		
 		int i = segments.size;
-		TrailSegment segment = new TrailSegment();
+		TrailSegment segment = Pools.instance.trail.obtain();
+		segment.alpha = 1;
 		segment.setFadeTime(.5f);
 		segment.setTexture(texture);
 		
-		v1.set(target.getWorldPoint(new Vector2(0, -.12f)));
-		v2.set(target.getWorldPoint(new Vector2(0, .12f)));
+		v1.set(target.getWorldPoint(new Vector2(0, -.7f)));
+		v2.set(target.getWorldPoint(new Vector2(0, .7f)));
 		
 		segment.setVertexLocation(Vertex.first, v1);
 		segment.setVertexLocation(Vertex.second, v2);
@@ -81,6 +89,7 @@ public class TrailGenerator {
 		segment.setVertexLocation(Vertex.fourth, v4);
 		
 		segments.add(segment);
+//		Gdx.app.log(tag, v1.toString()+v2.toString()+v3.toString()+v4.toString());
 	}
 	
 	public void setGentime(float time) {

@@ -1,21 +1,23 @@
 package com.arrowgames.test;
 
-import com.arrowgames.effects.ScreenFaceIn;
+import static com.badlogic.gdx.Gdx.*;
+
 import com.arrowgames.parents.ArrowGame;
 import com.arrowgames.parents.ArrowScreen;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 public class Splash extends ArrowScreen {
 	
 	public static final String tag = ArrowScreen.class.getSimpleName();
 	
+	ShaderProgram shaderProgram;
 	SpriteBatch batch;
-	Texture texture;
+	Texture texture, background;
 	float t, vertices[];
 
 	public Splash(ArrowGame game) {
@@ -24,12 +26,13 @@ public class Splash extends ArrowScreen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(.4f, .4f, 1, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		gl.glClearColor(.4f, .4f, 1, 1);
+		gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		t = Math.min(1, t+delta);
-
+		
 		batch.begin();
+		batch.draw(background, 0, 0);
 		batch.draw(texture, vertices, 0, 20);
 		batch.end();
 		
@@ -46,16 +49,22 @@ public class Splash extends ArrowScreen {
 	@Override
 	public void show() {
 		batch = new SpriteBatch();
-		batch.getProjectionMatrix().setToOrtho2D(0, 0, 15, 10);
-		texture = new Texture("sample.png");
+		texture = new Texture("badlogic.jpg");
+		background = new Texture("hd-1920-1080.png");
+		ShaderProgram.pedantic = false;
+		shaderProgram = new ShaderProgram(
+				files.internal("Shaders/diffuse_lighting.vp"), 
+				files.internal("Shaders/diffuse_lighting.fp"));
+		app.log(tag, shaderProgram.getLog());
+		batch.setShader(shaderProgram);
 		
-		float color = Color.toFloatBits(255, 255, 255, 255);
 		int idx = 0;
 		
-		float x = 0;
-		float y = 0;
-		float fx2 = 5;
-		float fy2 = 5;
+		float x = (graphics.getWidth()-texture.getWidth())/2;
+		float y = (graphics.getHeight()-texture.getHeight())/2;
+		float fx2 = x + texture.getWidth();
+		float fy2 = y + texture.getHeight();
+		float color = Color.toFloatBits(255, 255, 255, 255);
 		float u = 0, v = 1, u2 = 1, v2 = 0;
 		
 		vertices = new float[20];
@@ -84,7 +93,7 @@ public class Splash extends ArrowScreen {
 		vertices[idx++] = u2;
 		vertices[idx++] = v;
 	}
-
+	
 	@Override
 	public void hide() {
 		texture.dispose();

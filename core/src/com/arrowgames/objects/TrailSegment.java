@@ -15,9 +15,9 @@ public class TrailSegment {
 	float vertices[] = new float[20];
 	
 	public TrailSegment() {
-		fadeTime = .1f;
+		fadeTime = .03f;
 		alpha = 1;
-		duration = .1f;
+		duration = .03f;
 	}
 	
 	public void update(float deltaTime) {

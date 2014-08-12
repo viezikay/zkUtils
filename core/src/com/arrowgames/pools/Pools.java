@@ -1,6 +1,7 @@
 package com.arrowgames.pools;
 
 import com.arrowgames.effects.Lightning;
+import com.arrowgames.objects.TrailSegment;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
 
@@ -12,6 +13,7 @@ public class Pools {
 	
 	public VectorPool vector;
 	public LightningPool lightning;
+	public TrailSegmentPool trail;
 	
 	int vectorCounter;
 	
@@ -19,6 +21,7 @@ public class Pools {
 		
 		vector = new VectorPool();
 		lightning = new LightningPool();
+		trail = new TrailSegmentPool();
 	}
 	
 	public class VectorPool {
@@ -72,4 +75,11 @@ public class Pools {
 		}
 	}
 	
+	public class TrailSegmentPool extends Pool<TrailSegment> {
+
+		@Override
+		protected TrailSegment newObject() {
+			return new TrailSegment();
+		}
+	}
 }
