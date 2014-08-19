@@ -13,28 +13,28 @@ public abstract class GameObject {
 
 	Color debugColor = Color.WHITE;
 
-	boolean updatable;
-	boolean renderable;
-	boolean debugVisual;
+	protected boolean updatable;
+	protected boolean renderable;
+	protected boolean debugVisual;
 
-	float minVx = Float.MIN_VALUE;
-	float maxVx = Float.MAX_VALUE;
+	protected float minVx = Float.MIN_VALUE;
+	protected float maxVx = Float.MAX_VALUE;
 
-	float stateTime;
+	protected float stateTime;
 
-	Vector2 position;
-	Vector2 dimension;
-	Vector2 origin;
-	Vector2 scale;
-	Vector2 velocity;
-	Vector2 corrector;
-	float rotation;
+	public Vector2 position;
+	public Vector2 velocity;
+	protected Vector2 dimension;
+	protected Vector2 origin;
+	protected Vector2 scale;
+	protected Vector2 corrector;
+	protected float rotation;
 
-	RenderInfo info;
-	TextureRegion textureRegion;
-	Animation animation;
+	protected RenderInfo info;
+	protected TextureRegion textureRegion;
+	protected Animation animation;
 
-	Body body;
+	protected Body body;
 
 	public GameObject() {
 
@@ -94,6 +94,8 @@ public abstract class GameObject {
 	
 	public void renderBoundingBox(ShapeRenderer renderer) {
 		
+		if (!debugVisual) return;
+		
 		renderer.setColor(debugColor);
 		renderer.begin(ShapeType.Line);
 		renderer.rect(position.x, position.y, 
@@ -114,5 +116,13 @@ public abstract class GameObject {
 	
 	public class RenderInfo {
 		float x, y, w, h, oX, oY;
+	}
+	
+	public Vector2 getPosition() {
+		return position;
+	}
+	
+	public Vector2 getVelocity() {
+		return velocity;
 	}
 }
