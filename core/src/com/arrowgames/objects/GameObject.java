@@ -22,8 +22,12 @@ public abstract class GameObject {
 
 	protected float stateTime;
 
+	public Body body;
+
 	public Vector2 position;
+	public Vector2 startPos;
 	public Vector2 velocity;
+	
 	protected Vector2 dimension;
 	protected Vector2 origin;
 	protected Vector2 scale;
@@ -34,11 +38,10 @@ public abstract class GameObject {
 	protected TextureRegion textureRegion;
 	protected Animation animation;
 
-	protected Body body;
-
 	public GameObject() {
 
 		position = new Vector2();
+		startPos = new Vector2();
 		dimension = new Vector2(1, 1);
 		origin = new Vector2();
 		scale = new Vector2(1, 1);
@@ -118,11 +121,7 @@ public abstract class GameObject {
 		float x, y, w, h, oX, oY;
 	}
 	
-	public Vector2 getPosition() {
-		return position;
-	}
-	
-	public Vector2 getVelocity() {
-		return velocity;
+	public boolean hasBody() {
+		return body != null;
 	}
 }
