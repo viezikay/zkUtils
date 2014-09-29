@@ -1,37 +1,22 @@
 package com.arrowgames.core;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.brashmonkey.spriter.Data;
 import com.brashmonkey.spriter.LibGdxDrawer;
 import com.brashmonkey.spriter.LibGdxLoader;
 import com.brashmonkey.spriter.Player;
-import com.brashmonkey.spriter.SCMLReader;
 
 public class SpriterComponent extends GraphicsComponent {
 	
-	public static LibGdxLoader loader;
-	public static LibGdxDrawer drawer;
+	public static final LibGdxLoader loader = new LibGdxLoader();
+	public static final LibGdxDrawer drawer = new LibGdxDrawer(loader, null, null);
 	
-	public String path;
-	public SCMLReader reader;
-	public Data data;
 	public Player player;
 	
-	public SpriterComponent(String path) {
-		this.path = path;
-		
-		FileHandle scmlHandle = Gdx.files.internal(path);
-		reader = new SCMLReader(scmlHandle.read());
-		data = reader.getData();
-		
-		loader = new LibGdxLoader(data);
-		loader.load(scmlHandle.file());
-		
-		drawer = new LibGdxDrawer(loader, batch, renderer);
-		
-		player = new Player(data.getEntity(0));
+	public SpriterComponent(Data data, String entityName) {
+		loader.setData(data);
+		player = new Player(data.getEntity(entityName));
 	}
+	
 	@Override
 	public void reset() {
 		
@@ -40,7 +25,9 @@ public class SpriterComponent extends GraphicsComponent {
 	@Override
 	public void draw() {
 		batch.begin();
+		player.setPosition(actor.getX(), actor.getY());
 		player.update();
+		drawer.setBatch(batch);
 		drawer.draw(player);
 		batch.end();
 	}

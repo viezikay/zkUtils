@@ -13,7 +13,7 @@ public class ArrowWorld {
 	public ArrowWorld(Builder builder) {
 		batch = builder.batch;
 	}
-
+	
 	public void update(float deltaTime) {
 		
 		if (batch != null) render();
