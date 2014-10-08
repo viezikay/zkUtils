@@ -3,6 +3,9 @@ package com.arrowgames.test;
 import java.io.File;
 
 import com.arrowgames.core.SpriterComponent;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.brashmonkey.spriter.Data;
 import com.brashmonkey.spriter.LibGdxLoader;
 import com.brashmonkey.spriter.SCMLReader;
@@ -10,22 +13,26 @@ import com.brashmonkey.spriter.SCMLReader;
 public class Assets {
 	
 	public static final Assets instance = new Assets();
-	private LibGdxLoader loader = SpriterComponent.loader;
 	
-	public Data impData;
+	public ObjectMap<String, LibGdxLoader> loaders;
 	
-	public Assets() {
-		impData = loadSpriter("imp/imp.scml");
+	public void init() {
+		
+		loaders = new ObjectMap<String, LibGdxLoader>();
+		loadSpriter("imp", "imp/imp_000.scml");
 	}
 
-	public Data loadSpriter(String path) {
+	public Data loadSpriter(String name, String path) {
 		
-		SCMLReader reader = new SCMLReader(path);
+		FileHandle scmlHandler = Gdx.files.internal(path);
+		SCMLReader reader = new SCMLReader(scmlHandler.read());
 		Data data = reader.getData();
 		
 		File file = new File(path);
-		loader.setData(data);
+		LibGdxLoader loader = new LibGdxLoader(data);
 		loader.load(file);
+		
+		loaders.put(name, loader);
 		
 		return data;
 	}

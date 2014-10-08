@@ -7,8 +7,8 @@ import com.arrowgames.test.Tester;
 public class UtilsTester {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 480;
-		config.height = 320;
+		config.width = 1280;
+		config.height = 720;
 		config.vSyncEnabled = true;
 		new LwjglApplication(new Tester(), config);
 	}

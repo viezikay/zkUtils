@@ -3,11 +3,13 @@ package com.arrowgames.test.objects;
 import com.arrowgames.core.ArrowObject;
 import com.arrowgames.core.SpriterComponent;
 import com.arrowgames.test.Assets;
+import com.brashmonkey.spriter.LibGdxLoader;
 
 public class Imp extends ArrowObject {
 	
 	public Imp() {
-		graphics.add(new SpriterComponent(Assets.instance.impData, "walk"));
+		LibGdxLoader loader = Assets.instance.loaders.get("imp");
+		addComponent(new SpriterComponent(loader, "Imp"));
 	}
 
 	@Override
@@ -15,5 +17,4 @@ public class Imp extends ArrowObject {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

@@ -6,6 +6,7 @@ public class Tester extends ArrowGame {
 	
 	@Override
 	public void create() {
-		setScreen(new Splash(this));
+		Assets.instance.init();
+		setScreen(new Game(this));
 	}
 }
